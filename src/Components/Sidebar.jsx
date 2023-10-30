@@ -24,7 +24,7 @@ function switchTheme() {
 
 
 export default function Sidebar({ data, setData }) {
-	let [showCreateBox, setShowStatus] = useState(false);
+	let [showCreateBox, setShowStatus] = useState(true);
 
 	return (
 		<div className="sidebar-main-container">

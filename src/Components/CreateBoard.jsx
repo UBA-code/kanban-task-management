@@ -1,6 +1,8 @@
 export default function CreateBoard()
 {
 	return (
-		<h1>test</h1>
+		<div className="create-board-container w-[350px] h-[350px] fixed bg-black top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+
+		</div>
 	);
 }
