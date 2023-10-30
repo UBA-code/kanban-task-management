@@ -1,0 +1,17 @@
+.sidebar-container .boards-box .board-main-box:hover .board-name-sidebar,
+.sidebar-container .create-board .board-main-box:hover .board-name-sidebar{
+	color: white;
+}
+
+.sidebar-container .theme-switcher .switch-icon .active {
+	transform: translate(120%, -50%);
+}
+
+.sidebar-container.desktop-view {
+	@apply md:fixed md:top-0 md:left-0 md:w-[400px] md:px-3 md:h-[calc(100vh-6rem)] md:mt-24;
+}
+
+.sidebar-container .boards-box .active-board,
+.sidebar-container .boards-box .active-board span{
+	@apply bg-purple_Dark text-almost_White;
+}

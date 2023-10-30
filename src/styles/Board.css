@@ -1,0 +1,4 @@
+.board-container .new-colum img {
+	filter: invert(58%) sepia(10%) saturate(626%) hue-rotate(177deg) brightness(130%) contrast(87%);
+	margin-right: 5px;
+}
