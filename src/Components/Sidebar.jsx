@@ -76,6 +76,7 @@ export default function Sidebar({ data, setData }) {
 			<div className="fixed md:hidden top-0 side-bar-background h-screen w-screen bg-black opacity-[.5] transition duration-300 scale-0" onClick={switchSidebar}></div>
 			<div className="create-new-board-Component">
 				{showCreateBox && <CreateBoard data={data} showStatus={setShowStatus}/>}
+				{showCreateBox && <div className="dark-bg fixed top-0 w-full h-full bg-black opacity-[.5] z-[35]"></div>}
 			</div>
 		</div>
 	)

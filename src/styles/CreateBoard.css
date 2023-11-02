@@ -1,0 +1,9 @@
+
+.create-board-container input.column-input {
+	@apply w-[90%] border-[1px] border-solid rounded-md py-3 px-5 font-semibold text-sm dark:bg-dark_Gray dark:text-almost_White transition duration-300;
+}
+
+
+.create-board-container .create-board-btn {
+	@apply block w-full mt-3 py-3 text-lg font-bold rounded-full;
+}
