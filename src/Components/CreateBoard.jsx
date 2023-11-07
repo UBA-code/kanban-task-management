@@ -1,74 +1,81 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import deleteBtn from '../assets/icon-cross.svg'
 import '../styles/CreateBoard.css'
 import { v4 as uuidv4 } from 'uuid';
+import { addBoard } from '../App';
+import BoardOptions from './BoardOptions';
+import Warning from './Warning';
 
-
-export default function CreateBoard() {
-	let [arrOfElements, setArrOfElements] = useState([]);
-	let arrRef = useRef();
-	arrRef.current = arrOfElements;
-	let [finalObj, setFinalObj] = useState({
+export default function CreateBoard({ data, setData, showStatus }) {
+	let [columns, setColumns] = useState([]);
+	let [name, setName] = useState('');
+	let [showWarning, setWarning] = useState(0);
+	let [opacity, setOpacity] = useState("0");
+	let finalObj = {
 		name: "",
-		columns: [{
+		column: [{
 			columnName: "",
 		}],
-	});
+	};
 
-	function updateObj(name, columns = 0, newColumn = 0) {
-		let newObj = {
-			name: name !== 0 ? name : finalObj.name,
-			columns: columns ? columns : finalObj.columns,
+	function updateColumns(index = -1, value = '') {
+		if (columns[index] !== undefined) {
+			setColumns(columns.map((e, i) => {
+				if (i === index)
+					e.columnName = value;
+				return (e);
+			}));
 		}
-		if (newColumn)
-			newObj.columns.push({ columnName: newColumn, });
-		setFinalObj(newObj);
-	}
+		else {
+			let key = uuidv4();
 
-	function newColumn() {
-		let key = uuidv4();
-		let newColumnElement = (
-			<div className="input-box flex justify-between items-center my-3" key={key}>
-				<input className='column-input' type="text" placeholder="Column name" />
-				<img className='w-4 h-4 mx-2 cursor-pointer' src={deleteBtn} onClick={_ => {
-					setArrOfElements(arrRef.current.filter(e => e.key !== key));
-				}} />
-			</div>
-		);
-		setArrOfElements([...arrRef.current, newColumnElement]);
+			setColumns([...columns, { key: key, columnName: '', },]);
+		}
 	}
 
 	useEffect(_ => {
-		newColumn();
+		updateColumns();
+		setOpacity("1");
 	}, []);
 
 	return (
-		<div className="create-board-container w-[90%] md:w-[550px] h-[500px] fixed bg-white dark:bg-dark_Gray top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg p-4 z-[36] transition duration-300">
-			<h1 className="text-lg font-semibold dark:text-almost_White">Add new board</h1>
-			<div className="board-name-box flex flex-col">
-				<label className="text-_gray text-sm font-semibold py-3 dark:text-almost_White transition duration-300" htmlFor="boardName">Name</label>
-				<input className="border-[1px] border-solid rounded-md py-3 px-5 font-bold text-sm dark:bg-dark_Gray dark:text-almost_White transition duration-300"
-					type="text" id="boardName" placeholder="e.g. Web Desing" value={finalObj.name} onChange={e => updateObj(e.target.value)} />
+		<>
+			<div className={`dark-bg fixed top-0 w-full h-full bg-black opacity-${opacity === "1" ? "50" : "0"} z-[45] smoth-transition`} onClick={() =>{
+				setOpacity("0");
+				setTimeout(() => {
+					showStatus(0);
+				}, 300);
+			}}></div>
+			<div className={`create-board-container fixed w-[90%] md:w-[550px] h-[500px] bg-white dark:bg-dark_Gray top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg p-4 z-50 smoth-transition opacity-${opacity}`}>
+				<h1 className="text-lg font-semibold dark:text-almost_White smoth-transition">Add new board</h1>
+				<BoardOptions name={name} setName={setName} columns={columns} setColumns={setColumns} updateColumns={updateColumns} />
+				<button className={`create-new-board-btn create-board-btn bg-purple_Dark text-almost_White ${!name.length ? "cursor-not-allowed" : ""}`} onClick={_ => {
+					let empty = 0;
+					finalObj.name = name;
+					finalObj.column = columns.map(e => {
+						if (!e.columnName.length)
+							empty = 1;
+						return { name: e.columnName };
+					});
+					finalObj['key'] = uuidv4();
+					console.log();
+					if (empty)
+						setWarning(1);
+					else {
+						addBoard(data, setData, finalObj);
+						setOpacity("0");
+						setTimeout(() => {
+							showStatus(0);
+						}, 300);
+					}
+				}}>
+					Create New Board
+				</button>
+				{showWarning ? <Warning msg={"Empty input value"} hideWarning={setWarning} /> : ""}
 			</div>
-			<label className="text-_gray text-sm font-semibold block py-3 dark:text-almost_White transition duration-300">Columns</label>
-			<div className="columns-box h-[170px] overflow-auto">
-				{arrRef.current}
-				{}
-			</div>
-			<button className="add-new-column-btn create-board-btn bg-purple_superLight text-purple_Dark dark:bg-almost_White transition duration-300" onClick={newColumn}>
-				+Add New Column
-			</button>
-			<button className="create-new-board-btn create-board-btn bg-purple_Dark text-almost_White" onClick={_=> {
-				arrOfElements.map(e=>{
-					console.log(e.props.children[0].props);
-					// return {
-					// 	node: e,
-					// 	name: e.target
-					// }
-				})
-			}}>
-				Create New Board
-			</button>
-		</div>
+		</>
 	);
 }
+
+
+// {name, setName, columns, setColumns}

@@ -1,0 +1,4 @@
+
+.smoth-transition {
+	@apply transition duration-300
+}

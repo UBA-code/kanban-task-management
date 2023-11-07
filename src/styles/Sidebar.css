@@ -8,10 +8,16 @@
 }
 
 .sidebar-container.desktop-view {
-	@apply md:fixed md:top-0 md:left-0 md:w-[400px] md:px-3 md:h-[calc(100vh-6rem)] md:mt-24;
+	@apply md:fixed md:top-0 md:left-0 md:w-[400px] md:h-[calc(100vh-6rem)] md:mt-24;
 }
 
 .sidebar-container .boards-box .active-board,
 .sidebar-container .boards-box .active-board span{
 	@apply bg-purple_Dark text-almost_White;
 }
+
+
+.active-side-bar {
+	@apply translate-x-[0%];
+}
+
